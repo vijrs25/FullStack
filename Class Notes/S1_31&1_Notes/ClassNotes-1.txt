@@ -1,0 +1,155 @@
+Online Site: https://sqliteonline.com/ 
+
+8*3hr = 24hr live sessions with trainer - End to End MS-SQL Development 
+Class-1, Class-2 - Theory 
+Class-3 to Class-8 - Practical
+1.5hr - Break 15min - 1.15min of class = 3 hr 
+QnA - Class - QnA
+
+Class-1: Theory 
+---------------
+what? Microsoft SQL Server(Database management software) - SQL (Structured query language)
+why?  SQL - It is the very core/ fundamental language in software industry 
+how?  weekend batch - 3hr - 24hr live class (1st half - 15min break - 2nd half)
+
+RDBMS(Structured) - MS-SQL Server(70%), Oracle, DB2, mysql, Postgres 
+NoSQL(Bigdata/Unstructured) - MongoDB, Redis, Cassandra, CouchDB, DocumentDB, AuroraDB
+
+Application Layer: 
+User Interface - HTML, CSS
+Application layer - c#, java
+Database layer - SQL 
+
+Client Server Architecture - Google, Facebook, Instagram, Amazon, YouTube 
+OLTP - Online Transaction Protocol 
+
+
+
+
+MS-SQL Server/ Database Server - Server Software 
+SSMS/ SQL Server Management Studio - Clint software 
+SSMS <--> SQL Server
+
+-- What is client server architecture? 
+-- What is data consistency? 
+
+-- Command types:
+DQL, DDL, DML, DCL
+
+
+I want to store student information
+StudentDetails
+-----------------
+S_ID, Name, Age, Contact, Address
+
+file-1:      'My name is Rahul, my age is 20'
+file-1-Copy: 'My name is Rahul, my age is 20'
+
+
+person(ID, Name, Age)
+1, Priya, 25
+2, Trimala, 26
+3, Mahesh, 26
+
+
+1 --> 25
+2 --> 26
+3 --> 26
+
+2 --> 26/27
+
+DBMS -- server name
+Databases
+Tables
+Data
+
+
+-- What is normalization? 
+Technique to minimize data duplication and increase logical consistency. 
+
+
+-- Why to perform normalization? 
+Remove redundancy from database tables
+Maintain consistency and integrity
+
+-- What is consistency? 
+there should not be any data mismatch between different access. 
+
+-- what is integrity? 
+If the data is consistent that means the table maintained its integrity.  
+
+anomalies without normalization?
+Redundancy, Insert, update, delete anomalies
+
+Person(SSN, Name, Age, Address)
+SSN --> Name
+
+
+Customer(CID, CName, CAge, CMobile) 
+Person(ANumber, Name, Age, Address)
+100 --> Rahul
+100 --> Riya 
+
+100 --> 
+
+
+-- what is dependency? 
+It is the logical relation between two columns in a table. 
+
+
+-- Funtional dependency:
+A cell value in a row can uniquely determine the other cell values of the same row
+
+employee_name --> Experience 
+Chintan       --> 
+Employee_ID --> Experience 
+ID --> Name, Age, Address, Gender
+
+-- Functional dependency 
+A --> B If for the value of A there is a unique value of B
+a1 --> b1
+a1 --> b2
+Here for the value of A as a1 we are not getting unique value of B 
+as there two values of B as b1 and b2
+
+
+Person(PID, PName, PAge)
+1, Raj, 10
+2, Riya, 20
+3, Nita, 10
+4, Rohit, 15
+
+A   --> C
+PID --> Age
+1/a2   --> 10/c2
+3/a3   --> 10/c2
+
+1 --> 10
+1 --> 20
+
+4 --> 15
+4 --> 20
+
+
+-- Full Functional dependency 
+Student(roll_num, Name, course_id, Subject, Grade)
+xyz --> W
+
+roll_num, course_id --> grade 
+(1, CSE301) --> A
+(1, CSE306) --> C
+(2, CSE301) --> B
+(2, CSE306) --> A
+(3, CSE316) --> C
+
+
+
+Roll_num, Subject --> Grade
+(1, DBMS) --> A
+(1, DS)   --> C
+(2, DBMS) --> B
+(2, DS)   --> A
+(3, AI)   --> C
+
+
+

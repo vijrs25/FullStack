@@ -1,0 +1,17 @@
+# Join table , common id, intersect, inner join
+SQL Methods for Common IDs Between Two Tables
+
+INNER JOIN: Efficient for matching rows in both tables.
+SELECT t1.ID FROM Table1 t1 INNER JOIN Table2 t2 ON t1.ID = t2.ID;
+
+INTERSECT: Simplest for direct common values (if supported).
+SELECT ID FROM Table1 INTERSECT SELECT ID FROM Table2;
+
+WHERE EXISTS: Best for checking existence in large datasets.
+SELECT ID FROM Table1 t1 WHERE EXISTS (SELECT 1 FROM Table2 t2 WHERE t1.ID = t2.ID);
+
+Use INNER JOIN for detailed row info.
+Use INTERSECT for direct common IDs.
+Use WHERE EXISTS for existence checks in subqueries.
+=============================================
+
