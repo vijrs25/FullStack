@@ -1,0 +1,129 @@
+# Join table , common id, intersect, inner join
+SQL Methods for Common IDs Between Two Tables
+
+INNER JOIN: Efficient for matching rows in both tables.
+SELECT t1.ID FROM Table1 t1 INNER JOIN Table2 t2 ON t1.ID = t2.ID;
+
+INTERSECT: Simplest for direct common values (if supported).
+SELECT ID FROM Table1 INTERSECT SELECT ID FROM Table2;
+
+WHERE EXISTS: Best for checking existence in large datasets.
+SELECT ID FROM Table1 t1 WHERE EXISTS (SELECT 1 FROM Table2 t2 WHERE t1.ID = t2.ID);
+
+Use INNER JOIN for detailed row info.
+Use INTERSECT for direct common IDs.
+Use WHERE EXISTS for existence checks in subqueries.
+=============================================
+
+Summary of Commands
+1. Basic Query with TOP and Aliases
+Retrieve the top 20 restaurant names with a custom column alias and formatted rating:
+sql
+Copy code
+SELECT TOP 20 
+    RestaurantName, 
+    CAST(Rating AS DECIMAL(5, 2)) AS Pea
+FROM dbo.Jomato
+WHERE Rating > 4
+ORDER BY Rating DESC;
+=============================
+2. Query to Find Maximum Rating
+To find the restaurant name and cuisine type with the maximum rating:
+sql
+Copy code
+SELECT RestaurantName, CuisineType, Rating
+FROM dbo.Jomato
+WHERE Rating = (SELECT MAX(Rating) FROM dbo.Jomato);
+============================
+3. Group Data and Use Aggregate Functions
+To group restaurants by cuisine type and find the maximum rating for each type:
+sql
+Copy code
+SELECT CuisineType, MAX(Rating) AS HighestRating
+FROM dbo.Jomato
+GROUP BY CuisineType;
+============================
+4. Handling Errors Related to Aggregate Functions
+Ensure non-aggregated columns are included in the GROUP BY clause:
+sql
+Copy code
+SELECT RestaurantName, MAX(Rating) AS HighestRating
+FROM dbo.Jomato
+GROUP BY RestaurantName;
+============================
+5. User-Defined Function to Get Maximum Rating
+Create a reusable function to calculate the maximum rating:
+
+sql
+Copy code
+CREATE FUNCTION dbo.GetMaxRating()
+RETURNS FLOAT
+AS
+BEGIN
+    DECLARE @MaxRating FLOAT;
+    SELECT @MaxRating = MAX(Rating) FROM dbo.Jomato;
+    RETURN @MaxRating;
+END;
+GO
+Use the function in a query to fetch details of restaurants with the maximum rating:
+
+sql
+Copy code
+SELECT RestaurantName, CuisineType, Rating
+FROM dbo.Jomato
+WHERE Rating = dbo.GetMaxRating();
+=================================
+
+6. Resetting a Table with Backup and Restore
+Create a backup table:
+
+sql
+Copy code
+SELECT * INTO Restaurants_Backup
+FROM dbo.Jomato;
+Restore the original table from the backup:
+
+sql
+Copy code
+TRUNCATE TABLE dbo.Jomato;
+
+INSERT INTO dbo.Jomato
+SELECT * FROM Restaurants_Backup;
+=================================
+
+7. Using ORDER BY, OFFSET, and FETCH for Pagination
+Retrieve the top 10 rows after sorting by rating in descending order:
+sql
+Copy code
+SELECT RestaurantName, Rating
+FROM dbo.Jomato
+WHERE Rating > 4
+ORDER BY Rating DESC
+OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY;
+
+------------------------------------------------------------
+
+------------------------------------------------------------
+Reliability Improvements
+Handling NULL Values: Add checks for NULL values to avoid unexpected results.
+
+SELECT RestaurantName, Rating
+FROM dbo.Jomato
+WHERE Rating IS NOT NULL
+ORDER BY Rating DESC;
+Precision in Numeric Columns: Always cast or round floating-point numbers to ensure consistency.
+
+SELECT ROUND(Rating, 2) AS RoundedRating
+FROM dbo.Jomato;
+Data Validation: Use conditional checks in queries to filter out invalid or inconsistent data.
+
+SELECT *
+FROM dbo.Jomato
+WHERE Rating BETWEEN 0 AND 5;
+Indexing for Performance: Ensure the Rating column is indexed if frequently used in WHERE, ORDER BY, or aggregate functions.
+
+Best Practices Recap
+Always test user-defined functions for edge cases.
+Use subqueries and window functions for complex calculations.
+Back up tables before making significant changes.
+Write queries to handle real-world issues like NULL values or invalid data.
